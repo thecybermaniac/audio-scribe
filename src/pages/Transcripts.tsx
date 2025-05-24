@@ -1,9 +1,10 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Table, 
   TableBody, 
@@ -20,7 +21,8 @@ import {
   User, 
   FileAudio,
   Download,
-  Eye
+  Eye,
+  Menu
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Sidebar from "@/components/Sidebar";
@@ -28,6 +30,7 @@ import Sidebar from "@/components/Sidebar";
 const Transcripts = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const transcripts = [
     {
@@ -93,31 +96,53 @@ const Transcripts = () => {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
-      <Sidebar />
+    <div className="min-h-screen bg-slate-50 flex w-full">
+      {/* Desktop Sidebar */}
+      <div className="hidden lg:block">
+        <Sidebar />
+      </div>
+
+      {/* Mobile Sidebar */}
+      <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+        <SheetContent side="left" className="p-0 w-64">
+          <Sidebar />
+        </SheetContent>
+      </Sheet>
       
-      <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex flex-col min-w-0">
         {/* Top Navigation */}
-        <header className="bg-white border-b border-slate-200 px-6 py-4">
+        <header className="bg-white border-b border-slate-200 px-4 lg:px-6 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900">Transcripts</h1>
-              <p className="text-slate-600">Manage and view all your meeting transcripts</p>
+            <div className="flex items-center space-x-3">
+              {/* Mobile Menu Button */}
+              <Sheet open={sidebarOpen} onOpenChange={setSidebarOpen}>
+                <SheetTrigger asChild className="lg:hidden">
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-5 w-5" />
+                  </Button>
+                </SheetTrigger>
+              </Sheet>
+              
+              <div>
+                <h1 className="text-xl lg:text-2xl font-bold text-slate-900">Transcripts</h1>
+                <p className="text-slate-600 text-sm lg:text-base hidden sm:block">Manage and view all your meeting transcripts</p>
+              </div>
             </div>
             <Button className="bg-blue-600 hover:bg-blue-700">
               <FileAudio className="h-4 w-4 mr-2" />
-              Upload New Audio
+              <span className="hidden sm:inline">Upload New Audio</span>
+              <span className="sm:hidden">Upload</span>
             </Button>
           </div>
         </header>
 
-        <main className="flex-1 p-6">
+        <main className="flex-1 p-4 lg:p-6">
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Search and Filter Section */}
             <Card>
-              <CardContent className="p-6">
-                <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
-                  <div className="flex flex-1 items-center space-x-4">
+              <CardContent className="p-4 lg:p-6">
+                <div className="flex flex-col lg:flex-row gap-4 items-stretch lg:items-center justify-between">
+                  <div className="flex flex-col sm:flex-row flex-1 items-stretch sm:items-center space-y-3 sm:space-y-0 sm:space-x-4">
                     <div className="relative flex-1 max-w-md">
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 h-4 w-4" />
                       <Input
@@ -132,7 +157,7 @@ const Transcripts = () => {
                       <select
                         value={statusFilter}
                         onChange={(e) => setStatusFilter(e.target.value)}
-                        className="border border-slate-200 rounded-md px-3 py-2 text-sm"
+                        className="border border-slate-200 rounded-md px-3 py-2 text-sm flex-1 sm:flex-none"
                       >
                         <option value="all">All Status</option>
                         <option value="completed">Completed</option>
@@ -141,15 +166,15 @@ const Transcripts = () => {
                       </select>
                     </div>
                   </div>
-                  <div className="text-sm text-slate-500">
+                  <div className="text-sm text-slate-500 text-center lg:text-right">
                     {filteredTranscripts.length} of {transcripts.length} transcripts
                   </div>
                 </div>
               </CardContent>
             </Card>
 
-            {/* Transcripts Table */}
-            <Card>
+            {/* Desktop Table View */}
+            <Card className="hidden lg:block">
               <CardContent className="p-0">
                 <Table>
                   <TableHeader>
@@ -228,17 +253,80 @@ const Transcripts = () => {
               </CardContent>
             </Card>
 
+            {/* Mobile Scrollable Table */}
+            <Card className="lg:hidden">
+              <CardContent className="p-0">
+                <ScrollArea className="w-full">
+                  <div className="min-w-[700px]">
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead className="w-[200px]">Meeting Title</TableHead>
+                          <TableHead>Date</TableHead>
+                          <TableHead>Duration</TableHead>
+                          <TableHead>Status</TableHead>
+                          <TableHead className="text-right">Actions</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {filteredTranscripts.map((transcript) => (
+                          <TableRow key={transcript.id} className="hover:bg-slate-50">
+                            <TableCell className="font-medium">
+                              <div className="flex items-center space-x-2">
+                                <div className="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-lg">
+                                  <FileAudio className="h-3 w-3 text-blue-600" />
+                                </div>
+                                <span className="truncate text-sm">{transcript.title}</span>
+                              </div>
+                            </TableCell>
+                            <TableCell className="text-sm">{transcript.date}</TableCell>
+                            <TableCell className="text-sm">{transcript.duration}</TableCell>
+                            <TableCell>
+                              <Badge 
+                                variant={transcript.status === "completed" ? "default" : "secondary"}
+                                className={`text-xs ${
+                                  transcript.status === "completed" 
+                                    ? "bg-green-100 text-green-800" 
+                                    : transcript.status === "processing"
+                                    ? "bg-yellow-100 text-yellow-800"
+                                    : "bg-red-100 text-red-800"
+                                }`}
+                              >
+                                {transcript.status}
+                              </Badge>
+                            </TableCell>
+                            <TableCell className="text-right">
+                              <div className="flex items-center justify-end space-x-1">
+                                <Button asChild variant="ghost" size="sm">
+                                  <Link to={`/transcript/${transcript.id}`}>
+                                    <Eye className="h-3 w-3" />
+                                  </Link>
+                                </Button>
+                                <Button variant="ghost" size="sm">
+                                  <Download className="h-3 w-3" />
+                                </Button>
+                              </div>
+                            </TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </div>
+                </ScrollArea>
+              </CardContent>
+            </Card>
+
             {/* Empty State */}
             {filteredTranscripts.length === 0 && (
               <Card>
-                <CardContent className="p-12 text-center">
-                  <FileAudio className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-slate-900 mb-2">No transcripts found</h3>
-                  <p className="text-slate-600 mb-4">
+                <CardContent className="p-8 lg:p-12 text-center">
+                  <FileAudio className="h-8 lg:h-12 w-8 lg:w-12 text-slate-400 mx-auto mb-4" />
+                  <h3 className="text-base lg:text-lg font-medium text-slate-900 mb-2">No transcripts found</h3>
+                  <p className="text-slate-600 mb-4 text-sm lg:text-base">
                     {searchTerm ? "Try adjusting your search terms" : "Upload your first meeting audio to get started"}
                   </p>
                   {!searchTerm && (
-                    <Button className="bg-blue-600 hover:bg-blue-700">
+                    <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
                       <FileAudio className="h-4 w-4 mr-2" />
                       Upload Audio
                     </Button>
