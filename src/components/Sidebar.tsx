@@ -1,4 +1,3 @@
-
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { 
@@ -26,7 +25,7 @@ const Sidebar = () => {
     },
     {
       name: "Transcripts",
-      href: "/dashboard/transcripts",
+      href: "/transcripts",
       icon: FileText
     },
     {
