@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -256,16 +257,16 @@ const Transcripts = () => {
             {/* Mobile Scrollable Table */}
             <Card className="lg:hidden">
               <CardContent className="p-0">
-                <ScrollArea className="w-full">
-                  <div className="min-w-[700px]">
+                <div className="overflow-x-auto">
+                  <div className="min-w-[600px]">
                     <Table>
                       <TableHeader>
                         <TableRow>
                           <TableHead className="w-[200px]">Meeting Title</TableHead>
-                          <TableHead>Date</TableHead>
-                          <TableHead>Duration</TableHead>
-                          <TableHead>Status</TableHead>
-                          <TableHead className="text-right">Actions</TableHead>
+                          <TableHead className="w-[100px]">Date</TableHead>
+                          <TableHead className="w-[80px]">Duration</TableHead>
+                          <TableHead className="w-[80px]">Status</TableHead>
+                          <TableHead className="w-[100px] text-right">Actions</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
@@ -273,10 +274,10 @@ const Transcripts = () => {
                           <TableRow key={transcript.id} className="hover:bg-slate-50">
                             <TableCell className="font-medium">
                               <div className="flex items-center space-x-2">
-                                <div className="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-lg">
+                                <div className="flex items-center justify-center w-6 h-6 bg-blue-100 rounded-lg flex-shrink-0">
                                   <FileAudio className="h-3 w-3 text-blue-600" />
                                 </div>
-                                <span className="truncate text-sm">{transcript.title}</span>
+                                <span className="text-sm">{transcript.title}</span>
                               </div>
                             </TableCell>
                             <TableCell className="text-sm">{transcript.date}</TableCell>
@@ -312,7 +313,7 @@ const Transcripts = () => {
                       </TableBody>
                     </Table>
                   </div>
-                </ScrollArea>
+                </div>
               </CardContent>
             </Card>
 
@@ -330,7 +331,7 @@ const Transcripts = () => {
                       <FileAudio className="h-4 w-4 mr-2" />
                       Upload Audio
                     </Button>
-                  )}
+                    )}
                 </CardContent>
               </Card>
             )}
