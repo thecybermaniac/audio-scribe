@@ -20,6 +20,7 @@ import { Link } from "react-router-dom";
 import DragDropUpload from "@/components/DragDropUpload";
 import Sidebar from "@/components/Sidebar";
 import ThemeToggle from "@/components/ThemeToggle";
+import CreditsBalance from "@/components/CreditsBalance";
 import { cn } from "@/lib/utils";
 
 const Layout = ({
@@ -76,6 +77,7 @@ const Layout = ({
               </div>
             </div>
             <div className="flex items-center space-x-2 lg:space-x-3">
+              <CreditsBalance />
               <ThemeToggle />
             </div>
           </div>
