@@ -19,14 +19,14 @@ const Navigation = () => {
             <span className="text-xl font-bold text-slate-900">AudioScribe</span>
           </Link>
           
-          <div className="hidden md:flex items-center space-x-8">
+          {/* <div className="hidden md:flex items-center space-x-8">
             <Link to="/pricing" className="text-slate-600 hover:text-slate-900 transition-colors">
               Pricing
             </Link>
             <Link to="/dashboard" className="text-slate-600 hover:text-slate-900 transition-colors">
               Dashboard
             </Link>
-          </div>
+          </div> */}
 
           {/* Desktop Auth Links */}
           <div className="hidden md:flex items-center space-x-3">

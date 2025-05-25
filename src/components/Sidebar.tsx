@@ -42,8 +42,8 @@ const Sidebar = () => {
 
   return (
     <div className={cn(
-      "bg-white border-r border-slate-200 flex flex-col transition-all duration-300",
-      collapsed ? "w-16" : "w-64"
+      "bg-white border-r border-slate-200 flex flex-col transition-all duration-300 h-screen",
+      collapsed ? "w-20" : "w-64"
     )}>
       {/* Logo */}
       <div className="p-4 border-b border-slate-200">
@@ -84,10 +84,11 @@ const Sidebar = () => {
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                     isActive
                       ? "bg-blue-50 text-blue-700 border-r-2 border-blue-600"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50",
+                      collapsed && "justify-center"
                   )}
                 >
-                  <item.icon className="h-5 w-5 flex-shrink-0" />
+                  <item.icon className={cn("h-5 w-5 flex-shrink-0", collapsed && "")} />
                   {!collapsed && <span className="ml-3">{item.name}</span>}
                 </Link>
               </li>
