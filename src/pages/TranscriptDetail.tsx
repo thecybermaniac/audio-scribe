@@ -15,7 +15,7 @@ import {
   Users,
   CheckCircle2
 } from "lucide-react";
-import Sidebar from "@/components/Sidebar";
+import Layout from "@/components/Layout";
 
 const TranscriptDetail = () => {
   const { id } = useParams();
@@ -99,176 +99,174 @@ The team is on track with current sprint goals and no major blockers were identi
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex">
-      <Sidebar />
-      
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="bg-white border-b border-slate-200 px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-4">
-              <Link to="/dashboard">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back to Dashboard
-                </Button>
-              </Link>
-              <div>
-                <h1 className="text-2xl font-bold text-slate-900">{meetingData.title}</h1>
-                <div className="flex items-center space-x-4 mt-1 text-sm text-slate-500">
-                  <span className="flex items-center">
-                    <Calendar className="h-4 w-4 mr-1" />
-                    {meetingData.date}
-                  </span>
-                  <span className="flex items-center">
-                    <Clock className="h-4 w-4 mr-1" />
-                    {meetingData.duration}
-                  </span>
-                  <span className="flex items-center">
-                    <Users className="h-4 w-4 mr-1" />
-                    {meetingData.participants.length} participants
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="flex items-center space-x-3">
-              <Button variant="outline" size="sm">
-                <Share2 className="h-4 w-4 mr-2" />
-                Share
+    <Layout
+      header={{
+        title: meetingData.title,
+        description: `Meeting transcript from ${meetingData.date}`
+      }}
+    >
+      {/* Additional Header with meeting details and actions */}
+      <div className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-6 py-4 mb-6">
+        <div className="flex items-center justify-between max-w-5xl mx-auto">
+          <div className="flex items-center space-x-4">
+            <Link to="/transcripts">
+              <Button variant="ghost" size="sm">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Back to Transcripts
               </Button>
-              <Button variant="outline" size="sm">
-                <Download className="h-4 w-4 mr-2" />
-                Export
-              </Button>
+            </Link>
+            <div className="flex items-center space-x-4 text-sm text-slate-500 dark:text-slate-400">
+              <span className="flex items-center">
+                <Calendar className="h-4 w-4 mr-1" />
+                {meetingData.date}
+              </span>
+              <span className="flex items-center">
+                <Clock className="h-4 w-4 mr-1" />
+                {meetingData.duration}
+              </span>
+              <span className="flex items-center">
+                <Users className="h-4 w-4 mr-1" />
+                {meetingData.participants.length} participants
+              </span>
             </div>
           </div>
-        </header>
+          <div className="flex items-center space-x-3">
+            <Button variant="outline" size="sm">
+              <Share2 className="h-4 w-4 mr-2" />
+              Share
+            </Button>
+            <Button variant="outline" size="sm">
+              <Download className="h-4 w-4 mr-2" />
+              Export
+            </Button>
+          </div>
+        </div>
+      </div>
 
-        <main className="flex-1 p-6">
-          <div className="max-w-5xl mx-auto">
-            <Tabs defaultValue="transcript" className="space-y-6">
-              <TabsList className="grid w-full grid-cols-3">
-                <TabsTrigger value="transcript">Full Transcript</TabsTrigger>
-                <TabsTrigger value="summary">AI Summary</TabsTrigger>
-                <TabsTrigger value="actions">Action Items</TabsTrigger>
-              </TabsList>
+      <div className="px-6">
+        <div className="max-w-5xl mx-auto">
+          <Tabs defaultValue="transcript" className="space-y-6">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="transcript">Full Transcript</TabsTrigger>
+              <TabsTrigger value="summary">AI Summary</TabsTrigger>
+              <TabsTrigger value="actions">Action Items</TabsTrigger>
+            </TabsList>
 
-              <TabsContent value="transcript">
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle>Meeting Transcript</CardTitle>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => copyToClipboard(transcript, 'transcript')}
-                      >
-                        <Copy className="h-4 w-4 mr-2" />
-                        {copiedSection === 'transcript' ? 'Copied!' : 'Copy Transcript'}
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="prose max-w-none">
-                      <pre className="whitespace-pre-wrap text-sm leading-relaxed text-slate-700 font-sans">
-                        {transcript}
-                      </pre>
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
+            <TabsContent value="transcript">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle>Meeting Transcript</CardTitle>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => copyToClipboard(transcript, 'transcript')}
+                    >
+                      <Copy className="h-4 w-4 mr-2" />
+                      {copiedSection === 'transcript' ? 'Copied!' : 'Copy Transcript'}
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="prose max-w-none">
+                    <pre className="whitespace-pre-wrap text-sm leading-relaxed text-slate-700 dark:text-slate-300 font-sans">
+                      {transcript}
+                    </pre>
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
 
-              <TabsContent value="summary">
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle>AI-Generated Summary</CardTitle>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => copyToClipboard(summary, 'summary')}
-                      >
-                        <Copy className="h-4 w-4 mr-2" />
-                        {copiedSection === 'summary' ? 'Copied!' : 'Copy Summary'}
-                      </Button>
+            <TabsContent value="summary">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle>AI-Generated Summary</CardTitle>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => copyToClipboard(summary, 'summary')}
+                    >
+                      <Copy className="h-4 w-4 mr-2" />
+                      {copiedSection === 'summary' ? 'Copied!' : 'Copy Summary'}
+                    </Button>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="prose max-w-none">
+                    <div className="text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+                      {summary}
                     </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="prose max-w-none">
-                      <div className="text-slate-700 leading-relaxed whitespace-pre-line">
-                        {summary}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
+                  </div>
+                </CardContent>
+              </Card>
 
-                {/* Participants */}
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Meeting Participants</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {meetingData.participants.map((participant, index) => (
-                        <Badge key={index} variant="secondary">
-                          {participant}
-                        </Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="actions">
-                <Card>
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <CardTitle>Action Items</CardTitle>
-                      <Badge variant="secondary">
-                        {actionItems.filter(item => !item.completed).length} pending
+              {/* Participants */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Meeting Participants</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {meetingData.participants.map((participant, index) => (
+                      <Badge key={index} variant="secondary">
+                        {participant}
                       </Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {actionItems.map((item, index) => (
-                        <div
-                          key={index}
-                          className="flex items-start space-x-3 p-4 border border-slate-200 rounded-lg"
-                        >
-                          <div className="flex-shrink-0 mt-0.5">
-                            {item.completed ? (
-                              <CheckCircle2 className="h-5 w-5 text-green-600" />
-                            ) : (
-                              <div className="h-5 w-5 border-2 border-slate-300 rounded-full"></div>
-                            )}
-                          </div>
-                          <div className="flex-1">
-                            <p className={`font-medium ${item.completed ? 'line-through text-slate-500' : 'text-slate-900'}`}>
-                              {item.task}
-                            </p>
-                            <div className="flex items-center space-x-4 mt-2 text-sm text-slate-500">
-                              <span>Assigned to: <span className="font-medium">{item.assignee}</span></span>
-                              <span>Due: {item.dueDate}</span>
-                              <Badge 
-                                variant={item.priority === 'High' ? 'destructive' : item.priority === 'Medium' ? 'default' : 'secondary'}
-                                className="text-xs"
-                              >
-                                {item.priority}
-                              </Badge>
-                            </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            <TabsContent value="actions">
+              <Card>
+                <CardHeader>
+                  <div className="flex items-center justify-between">
+                    <CardTitle>Action Items</CardTitle>
+                    <Badge variant="secondary">
+                      {actionItems.filter(item => !item.completed).length} pending
+                    </Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {actionItems.map((item, index) => (
+                      <div
+                        key={index}
+                        className="flex items-start space-x-3 p-4 border border-slate-200 dark:border-slate-700 rounded-lg"
+                      >
+                        <div className="flex-shrink-0 mt-0.5">
+                          {item.completed ? (
+                            <CheckCircle2 className="h-5 w-5 text-green-600" />
+                          ) : (
+                            <div className="h-5 w-5 border-2 border-slate-300 dark:border-slate-600 rounded-full"></div>
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <p className={`font-medium ${item.completed ? 'line-through text-slate-500 dark:text-slate-400' : 'text-slate-900 dark:text-slate-100'}`}>
+                            {item.task}
+                          </p>
+                          <div className="flex items-center space-x-4 mt-2 text-sm text-slate-500 dark:text-slate-400">
+                            <span>Assigned to: <span className="font-medium">{item.assignee}</span></span>
+                            <span>Due: {item.dueDate}</span>
+                            <Badge 
+                              variant={item.priority === 'High' ? 'destructive' : item.priority === 'Medium' ? 'default' : 'secondary'}
+                              className="text-xs"
+                            >
+                              {item.priority}
+                            </Badge>
                           </div>
                         </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-            </Tabs>
-          </div>
-        </main>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </TabsContent>
+          </Tabs>
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 
