@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -16,6 +15,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Settings from "./pages/Settings";
 import ConfirmEmail from "./pages/ConfirmEmail";
 import NotFound from "./pages/NotFound";
+import Layout from "./components/Layout";
 
 const queryClient = new QueryClient();
 
@@ -28,14 +28,52 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/transcripts" element={<Transcripts />} />
+            <Route
+              path="/dashboard"
+              element={
+                <Layout
+                  header={{
+                    title: "Dashboard",
+                    description:
+                      "Welcome back! Here's what's happening with your meetings.",
+                  }}
+                >
+                  <Dashboard />
+                </Layout>
+              }
+            />
+            <Route
+              path="/transcripts"
+              element={
+                <Layout
+                  header={{
+                    title: "Transcripts",
+                    description:
+                      "Manage and view all your meeting transcripts.",
+                  }}
+                >
+                  <Transcripts />
+                </Layout>
+              }
+            />
             <Route path="/transcript/:id" element={<TranscriptDetail />} />
             <Route path="/pricing" element={<Pricing />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/settings" element={<Settings />} />
+            <Route
+              path="/settings"
+              element={
+                <Layout
+                  header={{
+                    title: "Settings",
+                    description: "Manage your account settings.",
+                  }}
+                >
+                  <Settings />
+                </Layout>
+              }
+            />
             <Route path="/confirm-email" element={<ConfirmEmail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

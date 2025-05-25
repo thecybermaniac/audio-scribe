@@ -11,11 +11,9 @@ import {
   ChevronLeft,
   ChevronRight
 } from "lucide-react";
-import { useState } from "react";
 import { cn } from "@/lib/utils";
 
-const Sidebar = () => {
-  const [collapsed, setCollapsed] = useState(false);
+const Sidebar = ({ collapsed, setCollapsed }: { collapsed: boolean, setCollapsed: (v: boolean) => void }) => {
   const location = useLocation();
 
   const navigation = [
@@ -43,25 +41,25 @@ const Sidebar = () => {
 
   return (
     <div className={cn(
-      "bg-white border-r border-slate-200 flex flex-col transition-all duration-300",
-      collapsed ? "w-16" : "w-64"
+      "bg-white dark:bg-slate-900 h-screen fixed border-r border-slate-200 flex flex-col transition-all duration-300",
+      collapsed ? "w-20" : "w-64"
     )}>
       {/* Logo */}
-      <div className="p-4 border-b border-slate-200">
+      <div className="p-4 border-b border-slate-200 dark:border-slate-700">
         <div className="flex items-center justify-between">
           {!collapsed && (
             <Link to="/" className="flex items-center space-x-2">
               <div className="flex items-center justify-center w-8 h-8 bg-blue-600 rounded-lg">
                 <Mic className="h-5 w-5 text-white" />
               </div>
-              <span className="text-xl font-bold text-slate-900">AudioScribe</span>
+              <span className="text-xl font-bold text-slate-900 dark:text-slate-100">AudioScribe</span>
             </Link>
           )}
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setCollapsed(!collapsed)}
-            className="ml-auto"
+            className="ml-auto hidden lg:block"
           >
             {collapsed ? (
               <ChevronRight className="h-4 w-4" />
@@ -74,7 +72,7 @@ const Sidebar = () => {
 
       {/* Navigation */}
       <nav className="flex-1 p-4">
-        <ul className="space-y-2">
+        <ul className="space-y-4">
           {navigation.map((item) => {
             const isActive = location.pathname === item.href;
             return (
@@ -85,10 +83,10 @@ const Sidebar = () => {
                     "flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors",
                     isActive
                       ? "bg-blue-50 text-blue-700 border-r-2 border-blue-600"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                      : "text-slate-900 dark:text-slate-200 dark:hover:text-slate-900 hover:text-slate-900 hover:bg-slate-50"
                   )}
                 >
-                  <item.icon className={cn("h-5 w-5 flex-shrink-0", collapsed && "")} />
+                  <item.icon className="h-5 w-5 flex-shrink-0" />
                   {!collapsed && <span className="ml-3">{item.name}</span>}
                 </Link>
               </li>
@@ -98,7 +96,7 @@ const Sidebar = () => {
       </nav>
 
       {/* User Section */}
-      <div className="p-4 border-t border-slate-200 dark:border-slate-700">
+      <div className="p-4 border-t border-slate-200 dark:border-slate-700 sm:mb-8">
         <Button
           variant="ghost"
           className="w-full justify-start text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-100"
