@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,10 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Upload, Search, FileAudio, Calendar, Clock, User, Settings, LogOut, Plus, Menu } from "lucide-react";
+import { Upload, Search, FileAudio, Calendar, Clock, User, LogOut, Plus, Menu } from "lucide-react";
 import { Link } from "react-router-dom";
 import DragDropUpload from "@/components/DragDropUpload";
 import Sidebar from "@/components/Sidebar";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -55,7 +55,7 @@ const Dashboard = () => {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 flex w-full">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex w-full">
       {/* Desktop Sidebar */}
       <div className="hidden lg:block">
         <Sidebar />
@@ -70,7 +70,7 @@ const Dashboard = () => {
       
       <div className="flex-1 flex flex-col min-w-0">
         {/* Top Navigation */}
-        <header className="bg-white border-b border-slate-200 px-4 lg:px-6 py-4">
+        <header className="bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 px-4 lg:px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               {/* Mobile Menu Button */}
@@ -83,19 +83,12 @@ const Dashboard = () => {
               </Sheet>
               
               <div>
-                <h1 className="text-xl lg:text-2xl font-bold text-slate-900">Dashboard</h1>
-                <p className="text-slate-600 text-sm lg:text-base hidden sm:block">Welcome back! Here's what's happening with your meetings.</p>
+                <h1 className="text-xl lg:text-2xl font-bold text-slate-900 dark:text-slate-100">Dashboard</h1>
+                <p className="text-slate-600 dark:text-slate-400 text-sm lg:text-base hidden sm:block">Welcome back! Here's what's happening with your meetings.</p>
               </div>
             </div>
             <div className="flex items-center space-x-2 lg:space-x-3">
-              <Button variant="outline" size="sm" className="hidden sm:flex">
-                <Settings className="h-4 w-4 mr-2" />
-                <span className="hidden md:inline">Settings</span>
-              </Button>
-              <Button variant="outline" size="sm" className="hidden sm:flex">
-                <User className="h-4 w-4 mr-2" />
-                <span className="hidden md:inline">Profile</span>
-              </Button>
+              <ThemeToggle />
             </div>
           </div>
         </header>
